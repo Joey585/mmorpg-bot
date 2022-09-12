@@ -1,7 +1,9 @@
 const { Client, GatewayIntentBits, Collection } = require("discord.js");
-const { token } = require("./config.json");
+const { token, mongoCLI } = require("./config.json");
 const fs = require("fs");
 const path = require("node:path");
+const {mongoose} = require("mongoose")
+const {api} = require("./api/app")
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds]})
 
@@ -42,6 +44,13 @@ client.on('interactionCreate', async interaction => {
         await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
     }
 });
+
+
+dbLogin().catch(e => console.log(e))
+
+async function dbLogin(){
+    await mongoose.connect(mongoCLI)
+}
 
 
 client.login(token)
