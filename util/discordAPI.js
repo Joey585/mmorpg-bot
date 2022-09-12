@@ -17,15 +17,22 @@ const getAccessToken = (code) => new Promise((resolve, reject) => {
     })
 });
 
-const getUserData = (token) => new Promise((resolve, reject) =>{
+const getUserData = (tokenData) => new Promise((resolve, reject) =>{
     axios.get("https://discord.com/api/users/@me", {
         headers: {
-            authorization: `${token.type} ${token}`,
+            authorization: `Bearer ${tokenData.access_token}`,
 
         }
-    })
+    }).then((data) => { resolve(data.data)}).catch((e) => reject(e))
+})
 
+const getUserGuilds = (tokenData) => new Promise((resolve, reject) => {
+    axios.get("https://discord.com/api/users/@me/guilds", {
+        headers: {
+            authorization: `Bearer ${tokenData.access_token}`
+        }
+    }).then((data) => { resolve(data.data)}).catch((e) => console.log(e))
 })
 
 
-module.exports = {getAccessToken}
+module.exports = {getAccessToken, getUserData, getUserGuilds}

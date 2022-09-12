@@ -1,0 +1,44 @@
+.server-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    padding: 10px;
+}
+
+#guild-frame{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.server-container:hover {
+    background-color: #32353B;
+    border-radius: 15px;
+}
+
+.server-name {
+    margin-top: 30px;
+    font-weight: bold;
+}
+
+body {
+    background-color: rgb(54, 57, 63);
+    font-family: Whitney, "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+    --saturation-factor: 1;
+}
+
+#user-pfp {
+    border-radius: 100%;
+    width: 75px;
+    height: 75px;
+}
+
+#user-pfp:hover {
+    filter: drop-shadow(0 4px 4px hsla(0,calc(var(--saturation-factor, 1)*0%),0%,0.16));
+}
+
+#header {
+    display: flex;
+    gap: 75%;
+}
+
+
