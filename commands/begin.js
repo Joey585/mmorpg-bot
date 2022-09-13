@@ -1,12 +1,16 @@
 const { SlashCommandBuilder, EmbedBuilder, ActionRowBuilder, SelectMenuBuilder} = require("discord.js")
-const mongoose = require("mongoose");
-const {Player} = require("../player")
+const {findPlayerById} = require("../util/findPlayerById")
 
 module.exports = {
     data: new SlashCommandBuilder()
         .setName("begin")
         .setDescription("Start making your character!"),
     async execute(interaction){
+        
+        if (await findPlayerById(interaction.user.id)){
+            return interaction.reply({content: `Excuse me, you already have a profile buddy... if you want to delete your profile, go into the settings and delete it!`, ephemeral: true})
+        }
+
         const welcomeEmbed = new EmbedBuilder()
             .setTitle("Welcome!")
             .setDescription("Welcome to the Wild West bot, the bot that will *immerse* you in a chat based, wild west game. This bot includes Daily and hourly quests, story missions, leveling up, companions, duels, and many more!")
@@ -43,19 +47,5 @@ module.exports = {
             )
 
         interaction.reply({embeds: [welcomeEmbed], components: [classPick]})
-
-        const playerSchema = mongoose.Schema({
-            player: Player
-        })
-        const playerModel = mongoose.model("player", playerSchema)
-
-        function createPlayer(job, user){
-            const player = new playerModel({ player: new Player(job, user)})
-            interaction.edit("You have now entered the unknown wild west as a " + job ? "shop" : "shop owner" ? "bounty" : "bounty hunter" + "...")
-            player.save();
-        }
-
-        module.exports = {createPlayer, playerModel}
-
     }
 }
