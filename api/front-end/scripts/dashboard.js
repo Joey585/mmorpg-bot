@@ -12,7 +12,9 @@ socket.once("auth", (data) => {
     })
 
     const pfp = document.getElementById("user-pfp")
+    const profile = document.getElementById("profile")
     pfp.src = `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png`
+    profile.href = `/profile?id=${user.id}`
 })
 
 

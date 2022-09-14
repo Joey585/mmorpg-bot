@@ -6,9 +6,9 @@ const player = new mongoose.Schema({
     storyPercent: Number,
     job: String,
     inventory: {
-        gun: Number,
-        food: Number,
-        horse: Number
+        gun: String,
+        food: String,
+        horse: String
     }
 })
 

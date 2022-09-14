@@ -7,9 +7,9 @@ module.exports = {
         .setName("profile")
         .setDescription("View your profile"),
     async execute(interaction){
-        const player = await findPlayerById(interaction.user.id).catch(() => {
-            return interaction.reply({content: "I'm sorry you don't have a profile, please do /begin to make one.", ephemeral: true})
-        })
+        const player = await findPlayerById(interaction.user.id);
+
+        if(player === null){return interaction.reply({content: "I'm sorry you don't have a profile, please do /begin to make one.", ephemeral: true})}
 
         const profileEmbed = new EmbedBuilder()
             .setTitle("Your profile")

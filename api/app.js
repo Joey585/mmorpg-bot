@@ -7,6 +7,9 @@ const io = new Server(server);
 const { clientId, clientSecret } = require("../config.json");
 const {getAccessToken, getUserData, getUserGuilds} = require("../util/discordAPI");
 const bitFieldCalculator = require("discord-bitfield-calculator");
+const {findPlayerById} = require("../util/findPlayerById")
+const {beautifyJob} = require("../util/beautifyJob")
+const inventory = require("../util/inventory")
 
 app.use(express.static("./api/front-end"))
 
@@ -34,6 +37,31 @@ app.get("/callback", async (req, res) => {
 
 app.get("/", (req, res) => {
     res.sendFile("/pages/home.html", { root: "./api/front-end"})
+})
+
+app.get("/profile", async (req, res) => {
+    const userId = req.query.id;
+    let profileData;
+
+    const player = await findPlayerById(userId)
+
+    if(player === null){
+        return res.send("You don't have a profile! Create one with the discord bot using /begin")
+    } else {
+        profileData = {
+            name: player.name,
+            coins: player.coins,
+            storyPercent: player.storyPercent,
+            job: beautifyJob(player.job),
+            inventory: {
+                gun: inventory.determineGunStats(player.inventory.gun)
+            }
+        }
+        res.redirect("/pages/profile.html")
+        io.on("connection", (socket) => { socket.emit("profileInfo", profileData) })
+    }
+
+
 })
 
 server.listen(3000, () => {console.log("API is listening on port 3000!")})
