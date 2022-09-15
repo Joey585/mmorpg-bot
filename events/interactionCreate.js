@@ -1,6 +1,8 @@
 const { createPlayer } = require("../util/createPlayer")
 const {ModalBuilder, TextInputBuilder, TextInputStyle, ActionRowBuilder} = require("discord.js");
 const {findPlayerById} = require("../util/findPlayerById")
+const bountyQuests = require("../quests/bounty")
+
 
 module.exports = {
     name: "interactionCreate",
@@ -48,7 +50,21 @@ module.exports = {
             player.save();
             await interaction.reply({content: `Congrats! Your name has been changed to ${newName}`, ephemeral: true})
         }
+        if(interaction.customId === "continue"){
+            const player = await findPlayerById(interaction.user.id);
+            if(player.job === "bounty"){
+                switch (player.storyPercent / 12.5){
+                    case 0:
+                        bountyQuests.beginStory(player, interaction)
+                        interaction.deferUpdate()
+                        break;
+                    default:
+                        interaction.reply({content: "Seems like you don't have any more quests to do :(", ephemeral: true})
+                }
+            }
 
+
+        }
 
     }
 

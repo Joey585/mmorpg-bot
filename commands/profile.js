@@ -16,7 +16,7 @@ module.exports = {
             .setDescription(`Hello, ${player.name} here is your profile!`)
             .addFields(
                 {name: "Coins", value: player.coins.toString()},
-                {name: "Your name", value: player.name ? "partner" : "No-Name"},
+                {name: "Your name", value: player.name},
                 {name: "Job", value: beautifyJob(player.job)}
             )
         const row = new ActionRowBuilder()

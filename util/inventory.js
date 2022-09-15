@@ -41,7 +41,10 @@ function determineGunStats(int){
             typeStr = "shotgun"
     }
 
-    return `${durabilityStr} ${typeStr}`
+    return {
+        durability: durabilityStr,
+        type: typeStr
+    }
 }
 
-module.exports = {determineGunStats}
+module.exports = {determineGunStats, bin_to_dec, maxType: 2}
