@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Your guild</title>
+</head>
+<body>
+
+<h1 id="guild-label"></h1>
+<div>
+    <h2>Duel Embed</h2>
+    <h4>Placeholders:</h4>
+    <p>{player} - Person who started the duel</p>
+    <p>{victim} - Person who accepted the duel</p>
+    <p>{ending} - The ending of the duel</p>
+    <label for="duel-embed-title">Embed Title</label>
+    <input type="text" id="duel-embed-title">
+    <label for="duel-embed-color">Embed Color</label>
+    <input id="duel-embed-color" type="color">
+    <label for="duel-embed-body">Embed Body</label>
+    <input type="text" maxlength="300" id="duel-embed-body">
+    <input type="submit" onclick="submitDuelEmbed()">
+    <span id="error"></span>
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="../scripts/guild.js"></script>
+
+</body>
+</html>

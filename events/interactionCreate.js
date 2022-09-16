@@ -1,6 +1,7 @@
 const { createPlayer } = require("../util/createPlayer")
 const {ModalBuilder, TextInputBuilder, TextInputStyle, ActionRowBuilder} = require("discord.js");
 const {findPlayerById} = require("../util/findPlayerById")
+const {findGuildById} = require("../util/findGuildById");
 const bountyQuests = require("../quests/bounty")
 
 
@@ -8,6 +9,13 @@ module.exports = {
     name: "interactionCreate",
     once: false,
     async execute(interaction) {
+
+        const guildData = await findGuildById(interaction.guild.id)
+
+        if(guildData === null){
+
+        }
+
         if(interaction.customId === "class-select") {
             let profession;
             switch (interaction.values.join()) {

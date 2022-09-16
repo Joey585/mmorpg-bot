@@ -1,5 +1,6 @@
 const {SlashCommandBuilder, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ComponentType} = require("discord.js");
 const {findPlayerById} = require("../util/findPlayerById")
+const {findGuildById} = require("../util/findGuildById");
 const {determineGunStats} = require("../util/inventory");
 const {acceptDuel, denyDuel } = require("../util/duelFunctions")
 
@@ -49,13 +50,21 @@ module.exports = {
         interaction.reply({components: [acceptRow], embeds: [duelEmbed], content: `<@${victim.id}>`}).then((m) => {
             m.createMessageComponentCollector({
                 componentType: ComponentType.Button, time: 30000
-            }).on("collect", (i) => {
-                if(i.customId === "accept"){
-                    if(i.user.id !== victimPlayer.id){ return i.reply({content: "You can't click that feller!", ephemeral: true})}
-                    acceptDuel(interaction, victimPlayer, player)
+            }).on("collect", async (i) => {
+                if(i.customId === "accept") {
+                    if(i.user.id !== victimPlayer.id) {
+                        return i.reply({content: "You can't click that feller!", ephemeral: true})
+                    }
+                    const ending = await acceptDuel(interaction, victimPlayer, player)
+                    const guildData = await findGuildById(interaction.guild.id)
+
+                    const endingEmbed = new EmbedBuilder()
+                        .setTitle(guildData.duelEmbedData.title.replace("{victim}", victimPlayer.name))
                 }
-                if(i.customId === "decline"){
-                    if(i.user.id !== victimPlayer.id){ return i.reply({content: "You can't click that feller!", ephemeral: true})}
+                if(i.customId === "decline") {
+                    if(i.user.id !== victimPlayer.id) {
+                        return i.reply({content: "You can't click that feller!", ephemeral: true})
+                    }
                     denyDuel(interaction, victimPlayer, player)
                 }
 

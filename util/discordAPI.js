@@ -1,5 +1,5 @@
 const axios = require("axios")
-const {clientId, clientSecret} = require("../config.json");
+const {clientId, clientSecret, token} = require("../config.json");
 
 const getAccessToken = (code) => new Promise((resolve, reject) => {
     let data = `client_id=${clientId}&client_secret=${clientSecret}&grant_type=authorization_code&code=${code}&redirect_uri=http://localhost:3000/callback&scope=identity`;
@@ -34,5 +34,13 @@ const getUserGuilds = (tokenData) => new Promise((resolve, reject) => {
     }).then((data) => { resolve(data.data)}).catch((e) => console.log(e))
 })
 
+const getGuild = (guildID) => new Promise((resolve, reject) => {
+    axios.get(`https://discord.com/api/guilds/${guildID}`, {
+        headers: {
+            authorization: `Bot ${token}`
+        }
+    }).then((data) => { resolve(data.data)}).catch((e) => reject(e))
+})
 
-module.exports = {getAccessToken, getUserData, getUserGuilds}
+
+module.exports = {getAccessToken, getUserData, getUserGuilds, getGuild}

@@ -5,11 +5,12 @@ const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server);
 const { clientId, clientSecret } = require("../config.json");
-const {getAccessToken, getUserData, getUserGuilds} = require("../util/discordAPI");
+const {getAccessToken, getUserData, getUserGuilds, getGuild} = require("../util/discordAPI");
 const bitFieldCalculator = require("discord-bitfield-calculator");
-const {findPlayerById} = require("../util/findPlayerById")
-const {beautifyJob} = require("../util/beautifyJob")
-const inventory = require("../util/inventory")
+const {findPlayerById} = require("../util/findPlayerById");
+const {findGuildById} = require("../util/findGuildById");
+const {beautifyJob} = require("../util/beautifyJob");
+const inventory = require("../util/inventory");
 
 app.use(express.static("./api/front-end"))
 
@@ -60,8 +61,26 @@ app.get("/profile", async (req, res) => {
         res.redirect("/pages/profile.html")
         io.on("connection", (socket) => { socket.emit("profileInfo", profileData) })
     }
+})
 
+app.get("/guild", async (req, res) => {
+    const guildID = req.query.id;
 
+    const guildData = await getGuild(guildID).catch((e) => {
+        if(e.response.status === 403){
+            return res.send("You need to add the bot to this server!")
+        }
+    })
+
+    res.redirect("/pages/guild.html")
+    io.on("connection", (socket) => {
+        socket.emit("guildData", (guildData));
+
+        socket.on("duelEmbedChange", async (embedData) => {
+            const guild = await findGuildById(guildID)
+            guild.addDuelEmbedData(embedData)
+        })
+    })
 })
 
 server.listen(3000, () => {console.log("API is listening on port 3000!")})
