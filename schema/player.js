@@ -22,6 +22,9 @@ player.method({
         }
         this.coins += amount
     },
+    removeCoins: function (amount){
+        this.coins -= amount
+    },
     changeName: function (name){
         this.name = name;
     },
@@ -36,7 +39,7 @@ player.method({
         this.inventory.gun = `${gunBin[0]} ${old.toString(2)}`
     },
     hasGun: function (){
-        if(this.inventory.gun === "0"){ return true}
+        return this.inventory.gun !== "0";
     },
     kill: function (){
         this.coins = 0;
@@ -44,6 +47,16 @@ player.method({
     },
     completedQuest: function (){
         this.storyPercent += 12.5
+    },
+    damageGun: function (){
+        const gunBin = this.inventory.gun.split(" ")
+        let old = inventory.bin_to_dec(gunBin[0])
+        if(old === inventory.maxDur){ return "Gun Broke"}
+        old++
+        this.inventory.gun = `${old.toString(2)} ${gunBin[1]}`
+    },
+    resetDeaths: function (){
+        this.deaths = 0;
     }
 })
 

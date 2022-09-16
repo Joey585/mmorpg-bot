@@ -1,5 +1,6 @@
 const {EmbedBuilder, ActionRowBuilder, ButtonBuilder, ComponentType} = require("discord.js");
 const random = require('random-name');
+const inventory = require("../util/inventory")
 
 let sheriffName = `Sheriff ${random.first()}`;
 
@@ -45,8 +46,10 @@ function beginStory(player, interaction){
                     beginning = "You have chosen to hunt down the serial killer, it will be a tough task, but you begin your journey... 12 hours later, you arrive to the killer... "
                     if(percent <= 12) {
                         result = "You surprise him, and choke him out with a rope! He squirms around for 3 minutes and then dies an awful death... you pick up his things and get a **brand-new revolver!**"
-                        player.giveGun("000 000")
-                        player.save();
+                        if(player.hasGun()){ result += "But it turns out yu already have a gun, so you leave it behind."} else {
+                            player.giveGun("000 000")
+                            player.save();
+                        }
                     }
                     if(percent >= 13 && percent <= 62) {
                         result = "You arrive and he hears your footsteps... you manage to jump on him before he pulls out his revolver. A fight ensues and in the midst of the fight, you grab his wallet! You run away with the wallet **+100 coins!**"
@@ -75,10 +78,23 @@ function beginStory(player, interaction){
                     }
                     player.completedQuest();
                     break;
+                case "prisoner":
+                    beginning = "You decide to pursue the prisoner... this is a good choice because he has nothing! He is fresh out of prison. The sheriff tells you that he is most likely in the town that the prison was in. San Diego, California... this was gonna be a long travel on horse."
+                    result = "You find him riding on a horse, high on drugs you have never heard of. He doesn't even realize you are there. You find a gun on his horse, and steal it without him noticing and pop him in the head. **+5 coins __and__ a dented rifle**"
+                    if (inventory.determineGunStats(player.inventory.gun).contains("rifle")){
+                        result += "But it seems you already have a rifle! So you leave it behind."
+                    } else {
+                        player.giveGun("010 001")
+
+                    }
+                    player.addCoins(5)
+                    player.save();
+                    player.completedQuest();
+                    break;
             }
                 const ending = beginning.concat(result)
                 const summaryEmbed = new EmbedBuilder()
-                    .setTitle("Results")
+                    .setTitle("Results for your first quest!")
                     .setDescription(ending)
                 return i.channel.send({ embeds: [summaryEmbed]})
         })

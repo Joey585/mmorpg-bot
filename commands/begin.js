@@ -46,6 +46,6 @@ module.exports = {
                     )
             )
 
-        interaction.reply({embeds: [welcomeEmbed], components: [classPick]})
+        interaction.reply({embeds: [welcomeEmbed], components: [classPick], ephemeral: true})
     }
 }

@@ -26,7 +26,6 @@ module.exports = {
             }
             const newPlayer = await createPlayer(profession, interaction)
             interaction.reply({ content: `Congratulations ${newPlayer.name}, you have created your account! Now type /profile to view the next things you can do!`, ephemeral: true})
-            interaction.message.delete()
         }
         if(interaction.customId === "changename"){
             const modal = new ModalBuilder()
@@ -63,6 +62,37 @@ module.exports = {
                 }
             }
 
+
+        }
+
+        if(interaction.customId === "shop-select"){
+            const item = interaction.values.join();
+            const player = findPlayerById(interaction.user.id)
+
+            switch (item){
+                case "revolver":
+                    if(player.coins < 25){ return interaction.reply({content: "You don't have enough!", ephemeral: true})}
+                    player.removeCoins(25)
+                    player.giveGun("000 000")
+                    break;
+                case "rifle":
+                    if(player.coins < 50){ return interaction.reply({content: "You don't have enough!", ephemeral: true})}
+                    player.removeCoins(50)
+                    player.giveGun("000 001")
+                    break;
+                case "shotgun":
+                    if(player.coins < 100){ return interaction.reply({content: "You don't have enough!", ephemeral: true})}
+                    player.removeCoins(100)
+                    player.giveGun("000 010")
+                    break;
+                case "death-counter":
+                    if(player.coins < 300){ return interaction.reply({content: "You don't have enough!", ephemeral: true})}
+                    player.removeCoins(300)
+                    player.resetDeaths();
+                    break;
+            }
+
+            return interaction.reply({content: "Purchase made!", ephemeral: true})
 
         }
 

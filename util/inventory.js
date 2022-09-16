@@ -47,4 +47,4 @@ function determineGunStats(int){
     }
 }
 
-module.exports = {determineGunStats, bin_to_dec, maxType: 2}
+module.exports = {determineGunStats, bin_to_dec, maxType: 2, maxDur: 3}
