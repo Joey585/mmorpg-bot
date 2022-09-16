@@ -22,9 +22,6 @@ player.method({
         }
         this.coins += amount
     },
-    removeCoins: function (amount){
-        this.coins -= amount
-    },
     changeName: function (name){
         this.name = name;
     },
@@ -57,6 +54,9 @@ player.method({
     },
     resetDeaths: function (){
         this.deaths = 0;
+    },
+    removeCoins: function (amount){
+        this.coins -= amount
     }
 })
 
