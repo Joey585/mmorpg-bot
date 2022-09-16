@@ -71,6 +71,7 @@ function acceptDuel(interaction, victimPlayer, player){
             }
     }, 3000)
 
+    console.log(ending)
     return ending
 }
 

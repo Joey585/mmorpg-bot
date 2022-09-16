@@ -79,6 +79,7 @@ app.get("/guild", async (req, res) => {
         socket.on("duelEmbedChange", async (embedData) => {
             const guild = await findGuildById(guildID)
             guild.addDuelEmbedData(embedData)
+            guild.save();
         })
     })
 })

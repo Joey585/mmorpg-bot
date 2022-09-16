@@ -3,7 +3,7 @@ const {ModalBuilder, TextInputBuilder, TextInputStyle, ActionRowBuilder} = requi
 const {findPlayerById} = require("../util/findPlayerById")
 const {findGuildById} = require("../util/findGuildById");
 const bountyQuests = require("../quests/bounty")
-
+const {createGuild} = require("../util/createGuild")
 
 module.exports = {
     name: "interactionCreate",
@@ -13,7 +13,7 @@ module.exports = {
         const guildData = await findGuildById(interaction.guild.id)
 
         if(guildData === null){
-
+            createGuild(interaction.guild.id)
         }
 
         if(interaction.customId === "class-select") {

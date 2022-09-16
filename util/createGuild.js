@@ -11,4 +11,7 @@ function createGuild(id) {
             body: "{ending}"
         }
     })
+    newGuild.save();
 }
+
+module.exports = {createGuild}

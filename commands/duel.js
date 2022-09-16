@@ -58,8 +58,26 @@ module.exports = {
                     const ending = await acceptDuel(interaction, victimPlayer, player)
                     const guildData = await findGuildById(interaction.guild.id)
 
+                    console.log(guildData)
+
+                    const title = guildData.duelEmbedData.title
+                    let titleFinal;
+                    titleFinal = title.replaceAll("{victim}", victimPlayer.name)
+                    titleFinal = title.replaceAll("{player}", player.name)
+
+                    const body = guildData.duelEmbedData.body
+                    let bodyFinal;
+                    bodyFinal = body.replaceAll("{player}", player.name)
+                    bodyFinal = body.replaceAll("{victim}", victimPlayer.name)
+                    bodyFinal = body.replaceAll("{ending}", ending)
+
+                    console.log(titleFinal)
+
                     const endingEmbed = new EmbedBuilder()
-                        .setTitle(guildData.duelEmbedData.title.replace("{victim}", victimPlayer.name))
+                        .setTitle(titleFinal)
+                        .setDescription(bodyFinal)
+                        .setColor(guildData.duelEmbedData.color)
+                    interaction.channel.send({embeds: [endingEmbed]})
                 }
                 if(i.customId === "decline") {
                     if(i.user.id !== victimPlayer.id) {
