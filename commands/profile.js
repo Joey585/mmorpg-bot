@@ -17,7 +17,9 @@ module.exports = {
             .addFields(
                 {name: "Coins", value: player.coins.toString()},
                 {name: "Your name", value: player.name},
-                {name: "Job", value: beautifyJob(player.job)}
+                {name: "Job", value: beautifyJob(player.job)},
+                {name: "Deaths", value: player.deaths.toString()},
+                {name: "Quests Done", value: `${(player.storyPercent / 12.5)}`}
             )
         const row = new ActionRowBuilder()
             .addComponents(
@@ -27,6 +29,6 @@ module.exports = {
                     .setStyle(2),
             )
 
-        interaction.reply({embeds: [profileEmbed], components: [row]})
+        interaction.reply({embeds: [profileEmbed], components: [row], ephemeral: true})
     }
 }

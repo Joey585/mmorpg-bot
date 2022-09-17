@@ -70,7 +70,7 @@ module.exports = {
                         .setTitle(titleFinal)
                         .setDescription(bodyFinal)
                         .setColor(guildData.duelEmbedData.color)
-                    interaction.channel.send({embeds: [endingEmbed]})
+                    return interaction.channel.send({embeds: [endingEmbed]})
                 }
                 if(i.customId === "decline") {
                     if(i.user.id !== victimPlayer.id) {
