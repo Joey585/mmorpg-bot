@@ -58,20 +58,13 @@ module.exports = {
                     const ending = await acceptDuel(interaction, victimPlayer, player)
                     const guildData = await findGuildById(interaction.guild.id)
 
-                    console.log(guildData)
-
                     const title = guildData.duelEmbedData.title
                     let titleFinal;
-                    titleFinal = title.replaceAll("{victim}", victimPlayer.name)
-                    titleFinal = title.replaceAll("{player}", player.name)
+                    titleFinal = title.replaceAll("{player}", player.name).replaceAll("{victim}", victimPlayer.name)
 
                     const body = guildData.duelEmbedData.body
                     let bodyFinal;
-                    bodyFinal = body.replaceAll("{player}", player.name)
-                    bodyFinal = body.replaceAll("{victim}", victimPlayer.name)
-                    bodyFinal = body.replaceAll("{ending}", ending)
-
-                    console.log(titleFinal)
+                    bodyFinal = body.replaceAll("{ending}", ending).replaceAll("{victim}", victimPlayer.name).replaceAll("{player}", player.name)
 
                     const endingEmbed = new EmbedBuilder()
                         .setTitle(titleFinal)

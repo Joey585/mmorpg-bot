@@ -81,7 +81,7 @@ function beginStory(player, interaction){
                 case "prisoner":
                     beginning = "You decide to pursue the prisoner... this is a good choice because he has nothing! He is fresh out of prison. The sheriff tells you that he is most likely in the town that the prison was in. San Diego, California... this was gonna be a long travel on horse."
                     result = "You find him riding on a horse, high on drugs you have never heard of. He doesn't even realize you are there. You find a gun on his horse, and steal it without him noticing and pop him in the head. **+5 coins __and__ a dented rifle**"
-                    if (inventory.determineGunStats(player.inventory.gun).contains("rifle")){
+                    if (inventory.determineGunStats(player.inventory.gun).type === "rifle"){
                         result += "But it seems you already have a rifle! So you leave it behind."
                     } else {
                         player.giveGun("010 001")

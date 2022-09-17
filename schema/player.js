@@ -8,6 +8,7 @@ const player = new mongoose.Schema({
     storyPercent: Number,
     job: String,
     deaths: Number,
+    lastCollected: Number,
     inventory: {
         gun: String,
         food: String,
@@ -57,6 +58,18 @@ player.method({
     },
     removeCoins: function (amount){
         this.coins -= amount
+    },
+    isAvailableDaily: function (){
+        const availableAt = this.lastCollected + 86400
+
+        if(this.lastCollected === 0){
+            return true;
+        }
+        return this.lastCollected >= availableAt;
+    },
+    collectedDailyReward: function (){
+        this.addCoins(100)
+        this.lastCollected = Math.round(Date.now() / 1000)
     }
 })
 

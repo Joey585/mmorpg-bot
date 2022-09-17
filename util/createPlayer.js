@@ -8,6 +8,7 @@ function createPlayer(job, interaction){
         storyPercent: 0,
         job: job,
         deaths: 0,
+        lastCollected: 0,
         inventory: {
             gun: "0",
             horse: 0,

@@ -1,13 +1,19 @@
+const {findPlayerById} = require("../util/findPlayerById")
 const {SlashCommandBuilder, EmbedBuilder, ActionRowBuilder, SelectMenuBuilder} = require("discord.js");
+
 module.exports = {
     data: new SlashCommandBuilder()
         .setName("shop")
         .setDescription("Buy things with your precious coins"),
-    execute(interaction){
+    async execute(interaction){
+        const player = await findPlayerById(interaction.user.id)
+        if(player === null){
+            return interaction.reply({content: "You cannot shop because you don't have a profile! Type /begin to make one!", ephemeral: true})
+        }
 
         const shopEmbed = new EmbedBuilder()
             .setTitle("The Shop!")
-            .setDescription("You can buy anything here with your coins, earn coins by doing quests, daily rewards, and duels!")
+            .setDescription("Hello, " + player.name + " You can buy anything here with your coins, earn coins by doing quests, daily rewards, and duels!")
             .addFields(
                 {name: "Revolver", value: "25 coins"},
                 {name: "Rifle", value: "50 coins"},

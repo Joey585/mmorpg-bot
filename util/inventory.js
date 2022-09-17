@@ -3,13 +3,14 @@ function bin_to_dec(bstr) {
         .replace(/[^01]/gi, ''), 2);
 }
 
-function determineGunStats(int){
-    const bits = int.split(" ")
+function determineGunStats(binary){
+
+    if(binary === "0"){return "No gun"}
+
+    const bits = binary.split(" ")
 
     let typeStr = ""
     let durabilityStr = ""
-
-    if(int === 0){return "No gun"}
 
     const durabilityRaw = bits[0].toString()
     const durability = bin_to_dec(durabilityRaw)

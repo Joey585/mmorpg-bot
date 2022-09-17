@@ -5,20 +5,15 @@ function denyDuel(interaction, victimPlayer){
 }
 function acceptDuel(interaction, victimPlayer, player){
     const percent = Math.floor(Math.random() * 100);
-
-    interaction.channel.send("The duel is about to begin...")
-
     let ending;
 
-    setTimeout(() => {
-        console.log(percent)
-            if(percent === 58) {
+        if(percent === 58) {
                 // player decimates victim 1% chance
                 if(!player.hasGun()) {
                     ending = `${player.name} absolutely strangles ${victimPlayer.name} to death, taking all of his coins! Tough luck, ${victimPlayer.name} you died!`
                 }
                 if(player.hasGun()) {
-                    ending = `${player.name} whips out his ${determineGunStats(player.inventory.gun)} and absolutely blew ${victimPlayer.name} away, taking all of his coins and killing him!`
+                    ending = `${player.name} whips out his ${determineGunStats(player.inventory.gun).type} and absolutely blew ${victimPlayer.name} away, taking all of his coins and killing him!`
                 }
                 victimPlayer.kill();
                 player.addCoins(victimPlayer.coins);
@@ -37,7 +32,7 @@ function acceptDuel(interaction, victimPlayer, player){
             if(percent >= 24 && percent < 58) {
                 // player barely beats victim 34% chance
                 if(player.hasGun()) {
-                    ending = `${player.name} pulls out his ${determineGunStats(player.inventory.gun)} extremely quickly, faster than ${victimPlayer.name} can react! And ${player.name} shoots them 2 times in the ribs before ${player.name}'s gun jams! ${victimPlayer.name} runs off in the sunset in search of medical treatment... **${player.name}'s gun decreased in durability**`
+                    ending = `${player.name} pulls out his ${determineGunStats(player.inventory.gun).type} extremely quickly, faster than ${victimPlayer.name} can react! And ${player.name} shoots them 2 times in the ribs before ${player.name}'s gun jams! ${victimPlayer.name} runs off in the sunset in search of medical treatment... **${player.name}'s gun decreased in durability**`
                     if(player.damageGun() === "Gun Broke") {
                         ending = `${player.name}, your gun broke!`
                     }
@@ -50,7 +45,7 @@ function acceptDuel(interaction, victimPlayer, player){
             if(percent === 59) {
                 // victim decimates player 1% chance
                 if(victimPlayer.hasGun()) {
-                    ending = `${victimPlayer.name} pulls out his fresh ${determineGunStats(victimPlayer.inventory.gun)} and absolutely pops ${victimPlayer.name}'s ass and steals all of his coins, killing him the process!`
+                    ending = `${victimPlayer.name} pulls out his fresh ${determineGunStats(victimPlayer.inventory.gun).type} and absolutely pops ${victimPlayer.name}'s ass and steals all of his coins, killing him the process!`
                 } else {
                     ending = `${victimPlayer.name} finds a rope on the ground and chokes ${player.name} with it for 46 seconds... killing him brutally, and stealing all of his coins!`
                 }
@@ -62,16 +57,13 @@ function acceptDuel(interaction, victimPlayer, player){
 
             if(percent > 59 && percent <= 100){
                 if(victimPlayer.hasGun()){
-                    ending = `${victimPlayer.name} pulls out his ${determineGunStats(player.inventory.gun)} extremely quickly, faster than ${player.name} can react! And ${victimPlayer.name} shoots them 2 times in the ribs before ${player.name}'s gun jams! ${victimPlayer.name} runs off in the sunset in search of medical treatment... **${victimPlayer.name}'s gun decreased in durability**`
+                    ending = `${victimPlayer.name} pulls out his ${determineGunStats(player.inventory.gun).type} extremely quickly, faster than ${player.name} can react! And ${victimPlayer.name} shoots them 2 times in the ribs before ${player.name}'s gun jams! ${victimPlayer.name} runs off in the sunset in search of medical treatment... **${victimPlayer.name}'s gun decreased in durability**`
                     if(victimPlayer.damageGun() === "Gun Broke"){ ending += ` ${victimPlayer.name}, your gun broke!`}
                 }
                 else { ending = `${victimPlayer.name} jumps at ${player.name} before he had any chance to react! Severely beating him on the face giving him 14 bruises (dang)... until the cops stop the fight! And throw ${victimPlayer.name} off of ${player.name}!`}
                 player.save();
                 victimPlayer.save();
             }
-    }, 3000)
-
-    console.log(ending)
     return ending
 }
 
