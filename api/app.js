@@ -16,6 +16,11 @@ app.use(express.static("./api/front-end"))
 
 app.get("/callback", async (req, res) => {
     const accessCode = req.query.code
+
+    if(!accessCode){
+        return res.send("Bad Request")
+    }
+
     const tokenData = await getAccessToken(accessCode).catch((e) => {console.log(e)})
     const userData = await getUserData(tokenData).catch((e) => {console.log(e)})
     const guildDataRaw = await getUserGuilds(tokenData).catch((e) => {console.log(e)})
@@ -66,21 +71,27 @@ app.get("/profile", async (req, res) => {
 app.get("/guild", async (req, res) => {
     const guildID = req.query.id;
 
-    const guildData = await getGuild(guildID).catch((e) => {
-        if(e.response.status === 403){
+    getGuild(guildID).then((guildData) => {
+        res.redirect("/pages/guild.html")
+        io.on("connection", (socket) => {
+            socket.emit("guildData", (guildData));
+            socket.on("duelEmbedChange", async (embedData) => {
+                const guild = await findGuildById(guildID)
+                guild.addDuelEmbedData(embedData)
+                guild.save();
+            })
+        })
+    }).catch((e) => {
+        if(e.response.status === 403) {
             return res.send("You need to add the bot to this server!")
         }
     })
+})
 
-    res.redirect("/pages/guild.html")
+app.get("/signout", (req, res) => {
+    res.redirect("/pages/home.html")
     io.on("connection", (socket) => {
-        socket.emit("guildData", (guildData));
-
-        socket.on("duelEmbedChange", async (embedData) => {
-            const guild = await findGuildById(guildID)
-            guild.addDuelEmbedData(embedData)
-            guild.save();
-        })
+        socket.disconnect()
     })
 })
 

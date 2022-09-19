@@ -11,5 +11,5 @@ socket.on("profileInfo", (profile) => {
     coins.innerHTML = `Coins: ${profile.coins}`
     story.innerHTML = `Story Progress: ${profile.storyPercent}%`
     job.innerHTML = `Job: ${profile.job}`
-    gun.innerHTML = `Gun: ${profile.inventory.gun}`
+    gun.innerHTML = `Gun: ${profile.inventory.gun.durability} ${profile.inventory.gun.type}`
 })

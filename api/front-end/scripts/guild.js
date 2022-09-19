@@ -17,7 +17,7 @@ function submitDuelEmbed(){
     socket.emit("duelEmbedChange", (embedDataObject))
 }
 
-socket.on("guildData", (data) => {
+socket.once("guildData", (data) => {
     const title = document.getElementById("guild-label")
     title.innerHTML = `Settings for ${data.name}`
 

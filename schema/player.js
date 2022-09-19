@@ -65,7 +65,7 @@ player.method({
         if(this.lastCollected === 0){
             return true;
         }
-        return this.lastCollected >= availableAt;
+        return (Date.now() / 1000) >= availableAt
     },
     collectedDailyReward: function (){
         this.addCoins(100)
